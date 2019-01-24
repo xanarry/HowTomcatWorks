@@ -622,6 +622,7 @@ public class SimpleContext implements Context, Pipeline {
     pipeline.invoke(request, response);
   }
 
+  //返回的是包含servlet的wrapper
   public Container map(Request request, boolean update) {
     //this method is taken from the map method in org.apache.cataline.core.ContainerBase
     //the findMapper method always returns the default mapper, if any, regardless the

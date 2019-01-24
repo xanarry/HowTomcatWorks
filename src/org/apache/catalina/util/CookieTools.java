@@ -63,6 +63,8 @@
 
 package org.apache.catalina.util;
 
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+
 import java.text.*;
 import java.util.*;
 
@@ -167,6 +169,7 @@ public class CookieTools {
           buf.append (";Secure");
         }
     }
+
 
     static void maybeQuote (int version, StringBuffer buf,
                                     String value)

@@ -16,12 +16,15 @@ public final class Bootstrap1 {
 /* call by using http://localhost:8080/ModernServlet,
    but could be invoked by any name */
 
-    HttpConnector connector = new HttpConnector();
-    Wrapper wrapper = new SimpleWrapper();
-    wrapper.setServletClass("ModernServlet");
-    Loader loader = new SimpleLoader();
-    Valve valve1 = new HeaderLoggerValve();
-    Valve valve2 = new ClientIPLoggerValve();
+    HttpConnector connector = new HttpConnector(); //接待http连接请求
+
+    Wrapper wrapper = new SimpleWrapper(); //wrapper是一个容器, 包裹着一个servlet
+    wrapper.setServletClass("ModernServlet"); //设置servlet的名字
+
+    Loader loader = new SimpleLoader(); //servlet类加载器
+
+    Valve valve1 = new HeaderLoggerValve(); //阀1输出请求端的IP
+    Valve valve2 = new ClientIPLoggerValve(); //阀2输出请求头内容
 
     wrapper.setLoader(loader);
     ((Pipeline) wrapper).addValve(valve1);

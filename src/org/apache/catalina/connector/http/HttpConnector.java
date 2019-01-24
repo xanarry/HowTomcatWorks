@@ -864,7 +864,7 @@ public final class HttpConnector
         HttpProcessor processor = new HttpProcessor(this, curProcessors++);
         if (processor instanceof Lifecycle) {
             try {
-                ((Lifecycle) processor).start();
+                ((Lifecycle) processor).start(); //创建完处理器的同时开启其生命周期
             } catch (LifecycleException e) {
                 log("newProcessor", e);
                 return (null);
@@ -1000,7 +1000,7 @@ public final class HttpConnector
             }
 
             // Hand this socket off to an appropriate processor
-            HttpProcessor processor = createProcessor();
+            HttpProcessor processor = createProcessor();//从处理器池中取出一个processor处理请求
             if (processor == null) {
                 try {
                     log(sm.getString("httpConnector.noProcessor"));

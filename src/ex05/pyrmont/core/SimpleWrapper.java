@@ -35,11 +35,11 @@ public class SimpleWrapper implements Wrapper, Pipeline {
   protected Container parent = null;
 
   public SimpleWrapper() {
-    pipeline.setBasic(new SimpleWrapperValve());
+    pipeline.setBasic(new SimpleWrapperValve());  //basic是执行servlet服务的阀, 在执行此阀之前, 必须执行完其他的阀
   }
 
   public synchronized void addValve(Valve valve) {
-    pipeline.addValve(valve);
+    pipeline.addValve(valve); //添加valve到pipeline的valves[]数组中
   }
 
   public Servlet allocate() throws ServletException {

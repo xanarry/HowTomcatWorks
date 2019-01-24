@@ -224,7 +224,14 @@ public class HttpResponse implements HttpServletResponse {
     catch (UnsupportedEncodingException e) {
       osr = new OutputStreamWriter(getStream());
     }
-    final PrintWriter outputWriter = new PrintWriter(osr);
+    final PrintWriter outputWriter = new PrintWriter(osr);//outputWriter不会自动flush
+
+    /* 一个典型的响应:
+      HTTP/1.1 200 OK
+      header
+      body
+    */
+
     // Send the "Status:" header
     outputWriter.print(this.getProtocol());
     outputWriter.print(" ");
@@ -234,6 +241,8 @@ public class HttpResponse implements HttpServletResponse {
       outputWriter.print(message);
     }
     outputWriter.print("\r\n");
+
+
     // Send the content-length and content-type headers (if any)
     if (getContentType() != null) {
       outputWriter.print("Content-Type: " + getContentType() + "\r\n");
@@ -241,6 +250,8 @@ public class HttpResponse implements HttpServletResponse {
     if (getContentLength() >= 0) {
       outputWriter.print("Content-Length: " + getContentLength() + "\r\n");
     }
+
+
     // Send all specified headers (if any)
     synchronized (headers) {
       Iterator names = headers.keySet().iterator();
@@ -257,6 +268,7 @@ public class HttpResponse implements HttpServletResponse {
         }
       }
     }
+
     // Add the session ID cookie if necessary
 /*    HttpServletRequest hreq = (HttpServletRequest) request.getRequest();
     HttpSession session = hreq.getSession(false);
@@ -277,12 +289,31 @@ public class HttpResponse implements HttpServletResponse {
       addCookie(cookie);
     }
 */
+
+
+    /*
+    针对Cookie数组中的多个cookie, 会生成多个Set-cookie
+        ArrayList cookies = new ArrayList();
+        Cookie c = new Cookie("name", "xiongyang");
+        c.setMaxAge(2345);
+        c.setComment("姓名");
+        c.setPath("/a/a/a/a");
+        c.setDomain("xanarry.cc");
+        cookies.add(c);
+
+        cookies.add(new Cookie("age", "1234"));
+    以上两个Cookie产生的Set-Cookie如下:
+
+    Set-Cookie: name=xiongyang;Domain=xanarry.cc;Expires=Tue, 13-Nov-2018 05:45:09 GMT;Path=/a/a/a/a
+    Set-Cookie: age=1234
+     */
+
     // Send all specified cookies (if any)
     synchronized (cookies) {
       Iterator items = cookies.iterator();
       while (items.hasNext()) {
         Cookie cookie = (Cookie) items.next();
-        outputWriter.print(CookieTools.getCookieHeaderName(cookie));
+        outputWriter.print(CookieTools.getCookieHeaderName(cookie)); //Cookie有两个版本: Set-Cookie和Set-Cookie2
         outputWriter.print(": ");
         outputWriter.print(CookieTools.getCookieHeaderValue(cookie));
         outputWriter.print("\r\n");

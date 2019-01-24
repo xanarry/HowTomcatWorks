@@ -61,6 +61,11 @@ public class SimplePipeline implements Pipeline {
   public void removeValve(Valve valve) {
   }
 
+
+
+
+
+
   // this class is copied from org.apache.catalina.core.StandardPipeline class's
   // StandardPipelineValveContext inner class.
   protected class SimplePipelineValveContext implements ValveContext {

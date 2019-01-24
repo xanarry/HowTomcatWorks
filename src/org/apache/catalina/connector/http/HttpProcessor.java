@@ -42,6 +42,10 @@ import org.apache.catalina.util.StringParser;
  * @deprecated
  */
 
+/*HttpProcessor实现了Lifecycle, Runnable两个接口,
+* 其中Runnable有唯一需实现的方法run(),
+* Lifecycle中需要实现start()与stop()
+*/
 final class HttpProcessor
     implements Lifecycle, Runnable {
 
@@ -285,10 +289,10 @@ final class HttpProcessor
      *
      * @param socket TCP socket to process
      */
-    synchronized void assign(Socket socket) {
+    synchronized void assign(Socket socket) { //这个方法被connector在其他线程调用, 相当于是生产者
 
         // Wait for the Processor to get the previous Socket
-        while (available) {
+        while (available) { //available表示是否有新线程可用, 一开始默认为false, 则不进入循环, 直接赋值开始使用
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -313,7 +317,7 @@ final class HttpProcessor
      * Await a newly assigned Socket from our Connector, or <code>null</code>
      * if we are supposed to shut down.
      */
-    private synchronized Socket await() {
+    private synchronized Socket await() { //等待connector分发过来的socket, 相当于是消费者, await()与assign()通过this.socket联系在一起
 
         // Wait for the Connector to provide a new Socket
         while (!available) {
@@ -969,6 +973,7 @@ final class HttpProcessor
                 ((HttpServletResponse) response).setHeader
                     ("Date", FastHttpDateFormat.getCurrentDate());
                 if (ok) {
+                    //一切正常, 调用container中的方法提供本次请求服务
                     connector.getContainer().invoke(request, response);
                 }
             } catch (ServletException e) {
@@ -1004,6 +1009,7 @@ final class HttpProcessor
                     ok = false;
                 }
                 try {
+                    //这行代码会把response中的内容写入浏览器
                     request.finishRequest();
                 } catch (IOException e) {
                     ok = false;

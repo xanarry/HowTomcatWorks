@@ -282,7 +282,7 @@ public final class RequestUtil {
 
         ArrayList cookies = new ArrayList();
         while (header.length() > 0) {
-            int semicolon = header.indexOf(';');
+            int semicolon = header.indexOf(';'); //在Cookie中, 多个参数使用分号做分割符号, 注意与参数中的&不一样
             if (semicolon < 0)
                 semicolon = header.length();
             if (semicolon == 0)

@@ -48,15 +48,18 @@ public class HttpProcessor {
 
             // create HttpResponse object
             response = new HttpResponse(output);//response中有输出流
-            response.setRequest(request);
+            response.setRequest(request);//request需要根据request内容去选择资源给请求者
 
+            //header是response中的一个hashtable对象, key(String)->value(String[])
             response.setHeader("Server", "Pyrmont Servlet Container");
 
-            parseRequest(input, output);
+            //注意request,header与parameter的区别, parameter实际上不一定使用, 所以只有在request使用时才解析
+            parseRequest(input, output);//在这里, 实际上output没有用, 全部数据均从inputStream中解析数据
             parseHeaders(input);
 
             //check if this is a request for a servlet or a static resource
             //a request for a servlet begins with "/servlet/"
+            //不同类型的请求使用不同的processor
             if (request.getRequestURI().startsWith("/servlet/")) {
                 ServletProcessor processor = new ServletProcessor();
                 processor.process(request, response);
@@ -86,8 +89,7 @@ public class HttpProcessor {
     private void parseHeaders(SocketInputStream input)
             throws IOException, ServletException {
         while (true) {
-            HttpHeader header = new HttpHeader();
-            ;
+            HttpHeader header = new HttpHeader(); // key(char[])->value(char[])
 
             // Read the next header
             input.readHeader(header);
@@ -149,6 +151,9 @@ public class HttpProcessor {
         } else if (requestLine.uriEnd < 1) {
             throw new ServletException("Missing HTTP request URI");
         }
+
+        // uri与参数列表连在一起是一个整体, 所以上面145没有马上给uri赋值,
+        // 这里将urine和请求参数分离, 分别以字符串的形式赋值
         // Parse any query parameters out of the request URI
         int question = requestLine.indexOf("?");
         if (question >= 0) {
@@ -162,7 +167,7 @@ public class HttpProcessor {
 
 
         // Checking for an absolute URI (with the HTTP protocol)
-        if (!uri.startsWith("/")) {
+        if (!uri.startsWith("/")) { // 如果不是/a/b/c, 那么就就是http://a/b/c
             int pos = uri.indexOf("://");
             // Parsing out protocol and host name
             if (pos != -1) {
@@ -176,6 +181,7 @@ public class HttpProcessor {
         }
 
         // Parse any requested session ID out of the request URI
+        // 如果uri中携带jsessionid, 样子是这样的: /xxx/avc;jsessionid=xxx?a=x&b=x
         String match = ";jsessionid=";
         int semicolon = uri.indexOf(match);
         if (semicolon >= 0) {
@@ -196,7 +202,7 @@ public class HttpProcessor {
         }
 
         // Normalize URI (using String operations at the moment)
-        String normalizedUri = normalize(uri);
+        String normalizedUri = normalize(uri); //处理形如//a/c; /a/../b/c; /a\\b/c等非标准uri
 
         // Set the corresponding request properties
         ((HttpRequest) request).setMethod(method);

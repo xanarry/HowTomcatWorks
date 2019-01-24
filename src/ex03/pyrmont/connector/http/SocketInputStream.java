@@ -69,7 +69,7 @@ public class SocketInputStream extends InputStream {
     /**
      * Position in the buffer.
      */
-    protected int pos;
+    protected int pos; //全局性质的变量, 标记当前在Buffer数组中读到的位置
 
 
     /**
@@ -122,6 +122,7 @@ public class SocketInputStream extends InputStream {
      * read operations, or if the given buffer is not big enough to accomodate
      * the whole line.
      */
+    //typically. a request line is: GET|POST /uri/a/b.jsp HTTP/1.1
     public void readRequestLine(HttpRequestLine requestLine)
         throws IOException {
 
@@ -129,7 +130,7 @@ public class SocketInputStream extends InputStream {
         if (requestLine.methodEnd != 0)
             requestLine.recycle();
 
-        // Checking for a blank line
+        // Checking for a blank line, 跳过前导换行
         int chr = 0;
         do { // Skipping CR or LF
             try {

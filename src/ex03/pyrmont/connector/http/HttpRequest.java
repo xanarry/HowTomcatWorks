@@ -118,6 +118,7 @@ public class HttpRequest implements HttpServletRequest {
      */
     protected ServletInputStream stream = null;
 
+    //此时的inputStream已经经过了httpProcessor, 请求头部的信息已经被读取, 只剩下body
     public HttpRequest(InputStream input) {
         this.input = input;
     }
@@ -339,6 +340,8 @@ public class HttpRequest implements HttpServletRequest {
         return contextPath;
     }
 
+
+    //为什么getCookie需要synchronized?
     public Cookie[] getCookies() {
         synchronized (cookies) {
             if (cookies.size() < 1)
