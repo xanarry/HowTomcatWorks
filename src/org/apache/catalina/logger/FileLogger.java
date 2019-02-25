@@ -279,9 +279,9 @@ public class FileLogger
         if (!date.equals(tsDate)) {
             synchronized (this) {
                 if (!date.equals(tsDate)) {
-                    close();
-                    date = tsDate;
-                    open();
+                    close(); //关闭旧的日志文件
+                    date = tsDate; //设置新的日志文件名
+                    open(); //打开新的日志文件
                 }
             }
         }

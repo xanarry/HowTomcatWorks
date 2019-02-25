@@ -782,12 +782,12 @@ public class WebappClassLoader
             log("modified()");
 
         // Checking for modified loaded resources
-        int length = paths.length;
+        int length = paths.length;//The list of resources which should be checked when checking for modifications.
 
         // A rare race condition can occur in the updates of the two arrays
         // It's totally ok if the latest class added is not checked (it will
         // be checked the next time
-        int length2 = lastModifiedDates.length;
+        int length2 = lastModifiedDates.length; //The list of JARs last modified dates, in the order they should bsearched for locally loaded classes or resources.
         if (length > length2)
             length = length2;
 

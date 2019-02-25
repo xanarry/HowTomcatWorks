@@ -591,6 +591,8 @@ public abstract class ManagerBase implements Manager {
                 sessionId = generateSessionId();
         }
         */
+        // session在setId的时候会对sessionId做判断, 如果存在, 则移除, 否则不管, 然后将这个新的Session
+        // 通过manager的add()函数放入manager的hashMap(sessionId->session) sessions中
         session.setId(sessionId);
 
         return (session);

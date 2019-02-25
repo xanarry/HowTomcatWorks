@@ -625,7 +625,6 @@ public class WebappLoader
      * @exception LifecycleException if a lifecycle error occurs
      */
     public void start() throws LifecycleException {
-
         // Validate and update our current component state
         if (started)
             throw new LifecycleException

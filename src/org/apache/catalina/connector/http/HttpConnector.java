@@ -1155,7 +1155,7 @@ public final class HttpConnector
         started = true;
 
         // Start our background thread
-        threadStart();
+        threadStart(); //后台线程执行run方法, 监听http连接请求
 
         // Create the specified minimum number of processors
         while (curProcessors < minProcessors) {

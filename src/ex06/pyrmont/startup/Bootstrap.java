@@ -30,8 +30,13 @@ public final class Bootstrap {
 
     Mapper mapper = new SimpleContextMapper();
     mapper.setProtocol("http");
+
+
     LifecycleListener listener = new SimpleContextLifecycleListener();
     ((Lifecycle) context).addLifecycleListener(listener);
+    ((Lifecycle) context).addLifecycleListener(listener);
+
+
     context.addMapper(mapper);
     Loader loader = new SimpleLoader();
     context.setLoader(loader);

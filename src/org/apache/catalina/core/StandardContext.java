@@ -3431,6 +3431,7 @@ public class StandardContext
                 addDefaultMapper(this.mapperClass);
                 started = true;
 
+                //在此启动所有子组件
                 // Start our subordinate components, if any
                 if ((loader != null) && (loader instanceof Lifecycle))
                     ((Lifecycle) loader).start();

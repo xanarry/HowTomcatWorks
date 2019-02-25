@@ -7,8 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class SessionServlet extends HttpServlet {
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     System.out.println("SessionServlet -- service");
     response.setContentType("text/html");
     PrintWriter out = response.getWriter();

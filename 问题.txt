@@ -1,0 +1,22 @@
+1.response中的setContentLength()如何计算出响应的长度, 这个长度中包含了哪些内容的长度?
+
+2.在旧的基础之上, 服务器从什么位置接入了Session?
+    在HttpRequestBase类中,定义有getSessin(bool create)->doGetSession()方法, doGetSession中会调用context中的manager
+  来管理与处理session相关的内容, 因此相关servlet在使用到Session的时候, 通过request的getSessoin()将触发context中manager
+  工作起来处理Session相关的任务.
+
+3.session在什么位置写入了manager中的Session hashMap中?
+    当用户servlet中调用getSession函数时, request会让manager去创建一个Session, 在创建过程中, 会首通过Cookie传递过来的
+    jsessionID先检查目标Session是否已经存在, 如果存在则直接引用, 否则,调用ManagerBase中的createSession函数创建一个新
+    的Session, 生成一个SessionID, 然后在设置SessionID时候将新的Session放入manager的hashMap sessions中.
+
+3.处理请求的流程是什么样的?
+    connector负责接收http请求, connector含有一个container的引用. connector收到请求之后,构造好response与request,
+  然后将这两个对象传递给container中的invoke方法中, 进而执行pipeline的invoke方法, 最后执行目标servlet的service方法
+
+4.processor解析请求头与构造请求头是如何工作?
+
+5.Request的继承与实现关系?
+6.Response的继承与实现关系?
+7.Session的继承与实现关系?
+8.servlet在什么时候,什么地方被加入阀(valve)?

@@ -28,6 +28,7 @@ public final class Bootstrap {
     wrapper2.setName("Modern");
     wrapper2.setServletClass("ModernServlet");
 
+    //创建一个应用程序context, /setPath设置逻辑链接地址, setDocBase设置逻辑地址myApp对应的物理目录
     Context context = new StandardContext();
     // StandardContext's start method adds a default mapper
     context.setPath("/myApp");

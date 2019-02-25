@@ -31,6 +31,7 @@ public final class Bootstrap1 {
     Wrapper wrapper2 = new SimpleWrapper();
     wrapper2.setName("Modern");
     wrapper2.setServletClass("ModernServlet");
+    System.out.println("asdfasdfasdf");
 
     Context context = new StandardContext();
     // StandardContext's start method adds a default mapper
@@ -65,6 +66,7 @@ public final class Bootstrap1 {
     loginConfig.setRealmName("Simple Realm");
     // add realm
     Realm realm = new SimpleRealm();
+
 
     context.setRealm(realm);
     context.addConstraint(constraint);

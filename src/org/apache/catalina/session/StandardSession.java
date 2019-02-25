@@ -617,13 +617,13 @@ class StandardSession
         setValid(false);
 
         // Remove this session from our manager's active sessions
-        if (manager != null)
-            manager.remove(this);
+        if (manager != null) //从manager中移除Session
+            manager.remove(this); //->sessions.remove(session.getId());
 
         // Unbind any objects associated with this session
-        String keys[] = keys();
+        String keys[] = keys(); //->((String[]) attributes.keySet().toArray(results));
         for (int i = 0; i < keys.length; i++)
-            removeAttribute(keys[i], notify);
+            removeAttribute(keys[i], notify);//移除该Session中attribute中的所有属性
 
         // Notify interested session event listeners
         if (notify) {

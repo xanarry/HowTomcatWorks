@@ -17,6 +17,7 @@ import org.apache.catalina.connector.http.HttpConnector;
 public final class Bootstrap2 {
   public static void main(String[] args) {
     HttpConnector connector = new HttpConnector();
+    //在构造wrapper1, wrapper2的时候, 为wrapper中的pipeline的basic设置为SimpleWrapperValve
     Wrapper wrapper1 = new SimpleWrapper();
     wrapper1.setName("Primitive");
     wrapper1.setServletClass("PrimitiveServlet");
@@ -24,6 +25,7 @@ public final class Bootstrap2 {
     wrapper2.setName("Modern");
     wrapper2.setServletClass("ModernServlet");
 
+    //在构造context的时候, 为context中的pipeline的basic设置为SimpleWrapperValve
     Context context = new SimpleContext();
     context.addChild(wrapper1);
     context.addChild(wrapper2);
